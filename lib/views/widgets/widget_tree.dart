@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:the_workout_app/controllers/auth.dart';
-import 'package:the_workout_app/views/signin_page.dart';
-import 'package:the_workout_app/views/home_page.dart';
+import 'package:the_workout_app/views/screens/login_page.dart';
+import 'package:the_workout_app/views/screens/home_page.dart';
+import 'package:the_workout_app/views/screens/start_page.dart';
 
 class WidgetTree extends StatefulWidget {
   const WidgetTree({Key? key}) : super(key: key);
@@ -19,7 +20,7 @@ class _WidgetTreeState extends State<WidgetTree> {
         if (snapshot.hasData) {
           return HomePage();
         } else {
-          return const LoginPage();
+          return const StartPage();
         }
       },
     );
