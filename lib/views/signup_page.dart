@@ -2,15 +2,16 @@ import 'package:flutter/material.dart';
 import 'package:the_workout_app/controllers/auth.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:the_workout_app/models/auth/textfield_tile.dart';
+import 'package:the_workout_app/views/signin_page.dart';
 
-class LoginPage extends StatefulWidget {
-  const LoginPage({Key? key}) : super(key: key);
+class SignUpPage extends StatefulWidget {
+  const SignUpPage({Key? key}) : super(key: key);
 
   @override
-  State<LoginPage> createState() => _LoginPageState();
+  State<SignUpPage> createState() => _SignUpPageState();
 }
 
-class _LoginPageState extends State<LoginPage> {
+class _SignUpPageState extends State<SignUpPage> {
   String? errorMessage = '';
   bool isLogin = true;
 
@@ -43,7 +44,6 @@ class _LoginPageState extends State<LoginPage> {
     }
   }
 
-
   Widget _submitButton() {
     return ElevatedButton(
       onPressed:
@@ -58,6 +58,8 @@ class _LoginPageState extends State<LoginPage> {
         setState(() {
           isLogin = !isLogin;
         });
+        Navigator.pushReplacement(
+            context, MaterialPageRoute(builder: (context) => LoginPage()));
       },
       child: Text(isLogin ? 'Register instead' : 'Login instead'),
     );
@@ -67,7 +69,7 @@ class _LoginPageState extends State<LoginPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("The Workout App"),
+        title: const Text("Register"),
       ),
       body: Container(
         height: double.infinity,

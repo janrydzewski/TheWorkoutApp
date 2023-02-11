@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:the_workout_app/controllers/auth.dart';
-import 'package:the_workout_app/views/login_register_page.dart';
+import 'package:the_workout_app/views/signin_page.dart';
 import 'package:the_workout_app/views/home_page.dart';
 
 class WidgetTree extends StatefulWidget {
