@@ -16,31 +16,6 @@ class _LoginPageState extends State<LoginPage> {
   final TextEditingController _controllerEmail = TextEditingController();
   final TextEditingController _controllerPassword = TextEditingController();
 
-  Future<void> signInWithEmailAndPassword() async {
-    try {
-      await Auth.instance
-          .loginUser(_controllerEmail.text, _controllerPassword.text, context);
-    } on FirebaseAuthException catch (e) {
-      print(e);
-    }
-  }
-
-  Widget _submitButton() {
-    return ElevatedButton(
-      onPressed: signInWithEmailAndPassword,
-      child: const Text('Login'),
-    );
-  }
-
-  Widget _loginButton() {
-    return TextButton(
-      onPressed: () {
-        Navigator.pushReplacement(
-            context, MaterialPageRoute(builder: (context) => SignUpPage()));
-      },
-      child: const Text('Register instead'),
-    );
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -90,7 +65,11 @@ class _LoginPageState extends State<LoginPage> {
               ),
               ElevatedButton(
                   onPressed: () {
-                    signInWithEmailAndPassword;
+                    Auth.instance.loginUser(
+                      _controllerEmail.text,
+                      _controllerPassword.text,
+                      context,
+                    );
                   },
                   child: Container(
                     child: Center(
