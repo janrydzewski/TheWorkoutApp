@@ -28,13 +28,20 @@ class DatabaseService {
         .snapshots();
   }
 
+  Future<Stream> getWorkoutsExercises(String id) async {
+    return FirebaseFirestore.instance
+        .collection("workouts")
+        .doc(id)
+        .collection('exercises')
+        .snapshots();
+  }
+
   Future<String> createWorkout(
       String userName, String id, String workoutName) async {
     DocumentReference workoutDocumentReference = await workoutCollection.add({
       "workoutName": workoutName,
       "users": [],
       "workoutId": "",
-      "exercises": [],
     });
     await workoutDocumentReference.update({
       "users": FieldValue.arrayUnion(["${uid}"]),
@@ -45,8 +52,26 @@ class DatabaseService {
     return workoutDocumentReference.id;
   }
 
+  Future<String> createExercise(
+      String exerciseName, String workoutId) async {
+    DocumentReference workoutDocumentReference = await workoutCollection.doc(workoutId).collection('exercises').add({
+      "exerciseName": exerciseName,
+      "exerciseId": "",
+    });
+    await workoutDocumentReference.update({
+      "exerciseId": workoutDocumentReference.id,
+    });
+
+
+    return workoutDocumentReference.collection('exercises').id;
+  }
+
   Future<void> deleteWorkout(String workoutId, String workoutName) async {
     return workoutCollection.doc(workoutId).delete();
+  }
+
+  Future<void> deleteExercise(String workoutId, String exerciseId) async {
+    return workoutCollection.doc(workoutId).collection('exercises').doc(exerciseId).delete();
   }
 
   Future<void> renameWorkout(String workoutId, String workoutName, String newWorkoutName) async {

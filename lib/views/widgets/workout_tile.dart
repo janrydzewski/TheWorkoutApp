@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:the_workout_app/controllers/database_controller.dart';
+import 'package:the_workout_app/views/screens/workout_page.dart';
 
 class WorkoutTile extends StatefulWidget {
   final String username;
@@ -24,7 +25,12 @@ class _WorkoutTileState extends State<WorkoutTile> {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () {},
+      onTap: () {
+        Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (context) => WorkoutPage(workoutName: widget.workoutName, workoutId: widget.workoutId,)));
+      },
       child: Container(
         padding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
         margin: EdgeInsets.symmetric(horizontal: 5, vertical: 8),
