@@ -1,33 +1,24 @@
 import 'package:flutter/material.dart';
 import 'package:the_workout_app/controllers/auth.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:the_workout_app/views/widgets/sidebar.dart';
 
 class HomePage extends StatelessWidget {
   HomePage({Key? key}) : super(key: key);
 
   final User? user = Auth().currentUser;
 
-  Future<void> signOut() async {
-    await Auth().signOut();
-  }
-
-
-  Widget _userUid() {
-    return Text(user?.email ?? 'User email');
-  }
-
-  Widget _signOutButton() {
-    return ElevatedButton(
-      onPressed: signOut,
-      child: const Text('Sign Out'),
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      drawer: SidebarWidget(),
       appBar: AppBar(
-        title: const Text("The Workout App"),
+        title: const Text(
+          "The Workout App",
+          style: TextStyle(color: Colors.white),
+        ),
+        iconTheme: IconThemeData(color: Colors.white),
+        backgroundColor: Colors.redAccent,
       ),
       body: Container(
         height: double.infinity,
@@ -36,10 +27,7 @@ class HomePage extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            _userUid(),
-            _signOutButton(),
-          ],
+          children: <Widget>[],
         ),
       ),
     );

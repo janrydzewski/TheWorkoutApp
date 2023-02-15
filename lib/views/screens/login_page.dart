@@ -16,7 +16,6 @@ class _LoginPageState extends State<LoginPage> {
   final TextEditingController _controllerEmail = TextEditingController();
   final TextEditingController _controllerPassword = TextEditingController();
 
-
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
