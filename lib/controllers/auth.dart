@@ -2,6 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'dart:io';
 import 'package:get/get.dart';
+import 'package:the_workout_app/controllers/helper_functions.dart';
 import 'package:the_workout_app/models/user.dart' as user_model;
 import 'package:the_workout_app/views/screens/home_page.dart';
 import 'package:the_workout_app/views/screens/start_page.dart';
@@ -33,14 +34,15 @@ class Auth extends GetxController {
     await _firebaseAuth.sendPasswordResetEmail(email: email);
   }
 
-  Future<void> loginUser(String email, String password, BuildContext context) async {
+  Future<void> loginUser(
+      String email, String password, BuildContext context) async {
     try {
       if (email.isNotEmpty && password.isNotEmpty) {
-        await FirebaseAuth.instance.signInWithEmailAndPassword(
-            email: email, password: password);
+        await FirebaseAuth.instance
+            .signInWithEmailAndPassword(email: email, password: password);
         updateData();
-        Navigator.push(context,
-                        MaterialPageRoute(builder: (context) => HomePage()));
+        Navigator.push(
+            context, MaterialPageRoute(builder: (context) => HomePage()));
       } else {
         Get.snackbar('Error logging in', 'Enter all the fields');
       }
@@ -49,12 +51,11 @@ class Auth extends GetxController {
     }
   }
 
-  Future<void> createUserWithEmailAndPassword({
-    required String username,
-    required String email,
-    required String password,
-    required BuildContext context
-  }) async {
+  Future<void> createUserWithEmailAndPassword(
+      {required String username,
+      required String email,
+      required String password,
+      required BuildContext context}) async {
     try {
       if (username.isNotEmpty && email.isNotEmpty && password.isNotEmpty) {
         UserCredential credential =
@@ -66,14 +67,15 @@ class Auth extends GetxController {
           name: username,
           email: email,
           uid: credential.user!.uid,
+          workouts: [],
         );
         await FirebaseFirestore.instance
             .collection('users')
             .doc(credential.user!.uid)
             .set(user.toJson());
         updateData();
-        Navigator.push(context,
-                        MaterialPageRoute(builder: (context) => HomePage()));
+        Navigator.push(
+            context, MaterialPageRoute(builder: (context) => HomePage()));
       } else {
         Get.snackbar('Error Creating Account', 'Please enter all the files');
       }
@@ -89,6 +91,16 @@ class Auth extends GetxController {
   Future<void> updateData() async {
     _user = Rx<User?>(_firebaseAuth.currentUser);
     _user.bindStream(_firebaseAuth.authStateChanges());
+
+    String uid = user.uid;
+    final usersCollection = FirebaseFirestore.instance.collection('users').where('uid', isEqualTo: uid);
+    final snapshot = await usersCollection.get();
+    final doc = snapshot.docs.first;
+    final name = doc.get('name');
+    final email = doc.get('email');
+    await HelperFunctions.saveUserLoggedInStatus(true);
+    await HelperFunctions.saveUserEmailSF(email);
+    await HelperFunctions.saveUserNameSF(name);
   }
 
   _setInitialScreen(User? user) {

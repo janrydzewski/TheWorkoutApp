@@ -1,3 +1,4 @@
+import 'package:the_workout_app/views/screens/home_page.dart';
 import 'package:the_workout_app/views/widgets/widget_tree.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
@@ -19,7 +20,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.orange,
       ),
-      home: const WidgetTree(),
+      home: const HomePage(),
     );
   }
 }
