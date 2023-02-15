@@ -67,7 +67,6 @@ class Auth extends GetxController {
           name: username,
           email: email,
           uid: credential.user!.uid,
-          workouts: [],
         );
         await FirebaseFirestore.instance
             .collection('users')

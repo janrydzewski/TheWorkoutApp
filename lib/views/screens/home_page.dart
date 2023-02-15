@@ -1,9 +1,11 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:the_workout_app/controllers/auth.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:the_workout_app/controllers/database_controller.dart';
 import 'package:the_workout_app/controllers/helper_functions.dart';
 import 'package:the_workout_app/views/widgets/sidebar.dart';
+import 'package:the_workout_app/views/widgets/workout_tile.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -40,18 +42,19 @@ class _HomePageState extends State<HomePage> {
         iconTheme: IconThemeData(color: Colors.white),
         backgroundColor: Colors.redAccent,
       ),
-      body: Container(
-        height: double.infinity,
-        width: double.infinity,
-        padding: const EdgeInsets.all(20),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[],
+      body: workoutList(),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          popUpCreateGroupDialog(context);
+        },
+        elevation: 0,
+        backgroundColor: Colors.redAccent,
+        child: const Icon(
+          Icons.add,
+          color: Colors.white,
+          size: 30,
         ),
       ),
-      //floatingActionButton:
-        //  FloatingActionButton(onPressed: popUpCreateGroupDialog(context)),
     );
   }
 
@@ -183,6 +186,30 @@ class _HomePageState extends State<HomePage> {
               ],
             );
           });
+        });
+  }
+
+  workoutList() {
+    return StreamBuilder(
+        stream: workoutsStream,
+        builder: (context, AsyncSnapshot snapshot) {
+          if (snapshot.hasData) {
+            return SingleChildScrollView(
+              child: ListView.builder(
+                  itemCount: snapshot.data.docs.length,
+                  shrinkWrap: true,
+                  itemBuilder: (context, index) {
+                    DocumentSnapshot ds = snapshot.data.docs[index];
+                    return WorkoutTile(username: username, workoutId: ds['workoutId'], workoutName: ds['workoutName']);
+                  }),
+            );
+          } else {
+            return Center(
+              child: CircularProgressIndicator(
+                color: Colors.redAccent,
+              ),
+            );
+          }
         });
   }
 }

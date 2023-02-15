@@ -29,7 +29,7 @@ class DatabaseService {
   }
 
   Future<String> createWorkout(
-      String userName,String id, String workoutName) async {
+      String userName, String id, String workoutName) async {
     DocumentReference workoutDocumentReference = await workoutCollection.add({
       "workoutName": workoutName,
       "users": [],
@@ -37,17 +37,25 @@ class DatabaseService {
       "exercises": [],
     });
     await workoutDocumentReference.update({
-      "members": FieldValue.arrayUnion(["${uid}"]),
+      "users": FieldValue.arrayUnion(["${uid}"]),
       "workoutId": workoutDocumentReference.id,
     });
 
-    DocumentReference userDocumentReference = userCollection.doc(uid);
-
-    await userDocumentReference.update({
-      "workouts":
-          FieldValue.arrayUnion(["${workoutDocumentReference.id}_$workoutName"]),
-    });
 
     return workoutDocumentReference.id;
   }
+
+  Future<void> deleteWorkout(String workoutId, String workoutName) async {
+    return workoutCollection.doc(workoutId).delete();
+  }
+
+  Future<void> renameWorkout(String workoutId, String workoutName, String newWorkoutName) async {
+
+    return workoutCollection.doc(workoutId).update({
+      "workoutName": newWorkoutName,
+    });
+  }
+
+
+
 }
