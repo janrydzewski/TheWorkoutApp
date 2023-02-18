@@ -1,29 +1,36 @@
 import 'package:flutter/material.dart';
 import 'package:the_workout_app/controllers/database_controller.dart';
+import 'package:the_workout_app/views/screens/exercise_page.dart';
 import 'package:the_workout_app/views/screens/workout_page.dart';
 
 class ExerciseTile extends StatefulWidget {
-
   final String exerciseName;
   final String exerciseId;
   final String workoutId;
 
-  const ExerciseTile(
-      {Key? key, required this.exerciseName, required this.exerciseId, required this.workoutId,
-      })
-      : super(key: key);
+  const ExerciseTile({
+    Key? key,
+    required this.exerciseName,
+    required this.exerciseId,
+    required this.workoutId,
+  }) : super(key: key);
 
   @override
   State<ExerciseTile> createState() => _ExerciseTileState();
 }
 
 class _ExerciseTileState extends State<ExerciseTile> {
-
-
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
+        Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (context) => ExercisePage(
+                      exerciseName: widget.exerciseName,
+                      exerciseId: widget.exerciseId,
+                    )));
       },
       child: Container(
         padding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
@@ -50,8 +57,8 @@ class _ExerciseTileState extends State<ExerciseTile> {
               style: TextStyle(color: Colors.black, fontSize: 18),
             ),
             trailing: PopupMenuButton<String>(
-              onSelected: (value){
-                switch(value){
+              onSelected: (value) {
+                switch (value) {
                   case "delete":
                     popUpDeleteDialog(context);
                     break;
@@ -59,7 +66,6 @@ class _ExerciseTileState extends State<ExerciseTile> {
               },
               itemBuilder: (BuildContext context) {
                 return [
-
                   PopupMenuItem(
                     child: Text("Delete"),
                     value: "delete",
@@ -70,7 +76,6 @@ class _ExerciseTileState extends State<ExerciseTile> {
       ),
     );
   }
-
 
   popUpDeleteDialog(BuildContext context) {
     showDialog(
@@ -86,7 +91,6 @@ class _ExerciseTileState extends State<ExerciseTile> {
                 "Are you sure?",
                 textAlign: TextAlign.center,
               ),
-
               actions: [
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
@@ -105,10 +109,13 @@ class _ExerciseTileState extends State<ExerciseTile> {
                         style: TextStyle(color: Colors.black),
                       ),
                     ),
-                    SizedBox(width: 15,),
+                    SizedBox(
+                      width: 15,
+                    ),
                     ElevatedButton(
                       onPressed: () {
-                        DatabaseService().deleteExercise(widget.workoutId, widget.exerciseId);
+                        DatabaseService().deleteExercise(
+                            widget.workoutId, widget.exerciseId);
                         Navigator.of(context).pop();
                       },
                       style: ElevatedButton.styleFrom(
@@ -123,7 +130,6 @@ class _ExerciseTileState extends State<ExerciseTile> {
                     ),
                   ],
                 ),
-
               ],
             );
           });

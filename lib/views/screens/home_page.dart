@@ -200,7 +200,10 @@ class _HomePageState extends State<HomePage> {
                   shrinkWrap: true,
                   itemBuilder: (context, index) {
                     DocumentSnapshot ds = snapshot.data.docs[index];
-                    return WorkoutTile(username: username, workoutId: ds['workoutId'], workoutName: ds['workoutName']);
+                    return WorkoutTile(
+                        username: username,
+                        workoutId: ds['workoutId'],
+                        workoutName: ds['workoutName']);
                   }),
             );
           } else {
