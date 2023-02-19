@@ -44,6 +44,7 @@ class DatabaseService {
         .doc(workoutId)
         .collection('exercises')
         .doc(exerciseId)
+        .collection('results')
         .snapshots();
   }
 
@@ -83,14 +84,15 @@ class DatabaseService {
       String? v2,
       String? v3,
       String? v4,
-      String? v5) async {
+      String? v5,
+      String date) async {
     DocumentReference resultDocumentReference = await workoutCollection
         .doc(workoutId)
         .collection('exercises')
         .doc(exerciseId)
         .collection('results')
         .add({
-      "date": '18/02/2022',
+      "date": date,
       "t1": '-',
       "t2": '-',
       "t3": '-',
@@ -139,6 +141,15 @@ class DatabaseService {
         .doc(workoutId)
         .collection('exercises')
         .doc(exerciseId)
+        .delete();
+  }
+  Future<void> deleteResult(String workoutId, String exerciseId, String resultId) async {
+    return workoutCollection
+        .doc(workoutId)
+        .collection('exercises')
+        .doc(exerciseId)
+        .collection('results')
+        .doc(resultId)
         .delete();
   }
 

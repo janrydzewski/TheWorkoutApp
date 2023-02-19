@@ -3,36 +3,39 @@ import 'package:the_workout_app/controllers/database_controller.dart';
 import 'package:the_workout_app/views/screens/exercise_page.dart';
 import 'package:the_workout_app/views/screens/workout_page.dart';
 
-class ExerciseTile extends StatefulWidget {
-  final String exerciseName;
-  final String exerciseId;
+class ResultTile extends StatefulWidget {
   final String workoutId;
+  final String exerciseId;
+  final String resultId;
+  final String date;
+  final String t1;
+  final String t2;
+  final String t3;
+  final String t4;
+  final String t5;
 
-  const ExerciseTile({
+  const ResultTile({
     Key? key,
-    required this.exerciseName,
-    required this.exerciseId,
+    required this.date,
+    required this.t1,
+    required this.t2,
+    required this.t3,
+    required this.t4,
+    required this.t5,
     required this.workoutId,
+    required this.exerciseId,
+    required this.resultId,
   }) : super(key: key);
 
   @override
-  State<ExerciseTile> createState() => _ExerciseTileState();
+  State<ResultTile> createState() => _ExerciseTileState();
 }
 
-class _ExerciseTileState extends State<ExerciseTile> {
+class _ExerciseTileState extends State<ResultTile> {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () {
-        Navigator.push(
-            context,
-            MaterialPageRoute(
-                builder: (context) => ExercisePage(
-                      exerciseName: widget.exerciseName,
-                      exerciseId: widget.exerciseId,
-                      workoutId: widget.workoutId,
-                    )));
-      },
+      onTap: () {},
       child: Container(
         padding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
         margin: EdgeInsets.symmetric(horizontal: 5, vertical: 8),
@@ -43,19 +46,13 @@ class _ExerciseTileState extends State<ExerciseTile> {
             borderRadius: BorderRadius.all(Radius.circular(20))),
         width: 50,
         child: ListTile(
-            leading: CircleAvatar(
-              radius: 30,
-              backgroundColor: Colors.redAccent,
-              child: Text(
-                widget.exerciseName.substring(0, 1).toUpperCase(),
-                textAlign: TextAlign.center,
-                style:
-                    TextStyle(color: Colors.white, fontWeight: FontWeight.w500),
-              ),
-            ),
             title: Text(
-              widget.exerciseName,
-              style: TextStyle(color: Colors.black, fontSize: 18),
+              '${widget.t1}  ${widget.t2}  ${widget.t3}  ${widget.t4}  ${widget.t5}',
+              style: TextStyle(fontSize: 19),
+            ),
+            subtitle: Text(
+              widget.date,
+              style: TextStyle(fontSize: 15),
             ),
             trailing: PopupMenuButton<String>(
               onSelected: (value) {
@@ -115,8 +112,8 @@ class _ExerciseTileState extends State<ExerciseTile> {
                     ),
                     ElevatedButton(
                       onPressed: () {
-                        DatabaseService().deleteExercise(
-                            widget.workoutId, widget.exerciseId);
+                        DatabaseService().deleteResult(widget.workoutId,
+                            widget.exerciseId, widget.resultId);
                         Navigator.of(context).pop();
                       },
                       style: ElevatedButton.styleFrom(
