@@ -18,10 +18,7 @@ class SidebarWidget extends StatelessWidget {
       child: ListView(
         children: [
           UserAccountsDrawerHeader(
-            accountName: Text(
-              user?.uid ?? 'User name',
-              style: TextStyle(color: Colors.white),
-            ),
+            accountName: Text(''),
             accountEmail: Text(
               user?.email ?? 'User email',
               style: TextStyle(color: Colors.white),
